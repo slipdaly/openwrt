@@ -15,6 +15,10 @@ ar71xx_setup_interfaces()
 		ucidef_add_switch "switch0" \
 			"0@eth0" "4:lan" "5:wan"
 		;;
+        tl-wr802n-v1)
+                ucidef_set_interface_wan "eth0"
+                ucidef_set_interface_lan "eth1"
+                ;;
 	airrouter|\
 	ap121|\
 	ap121-mini|\
@@ -139,7 +143,6 @@ ar71xx_setup_interfaces()
 	tl-wa901nd-v4|\
 	tl-wa901nd-v5|\
 	tl-wr703n|\
-	tl-wr802n-v1|\
 	tl-wr802n-v2|\
 	tl-wr902ac-v1|\
 	ts-d084|\
