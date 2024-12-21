@@ -5,6 +5,7 @@
 
 . /lib/functions.sh
 . /lib/functions/system.sh
+. /lib/functions/lantiq.sh
 . /lib/upgrade/nand.sh
 
 # xor multiple hex values of the same length
@@ -113,35 +114,40 @@ case "$FIRMWARE" in
 	"ath9k-eeprom-pci-0000:00:0e.0.bin" | \
 	"ath9k-eeprom-pci-0000:01:00.0.bin" | \
 	"ath9k-eeprom-pci-0000:02:00.0.bin")
-		board=$(board_name)
+		board=$(lantiq_board_name)
 
 		case "$board" in
-			arcadyan,arv7518pw)
+			ARV7518PW)
 				ath9k_eeprom_extract "boardconfig" 1024 1
 				;;
-			arcadyan,arv8539pw22)
+			ARV8539PW22)
 				ath9k_eeprom_extract "art" 1024 1
 				;;
-			bt,homehub-v2b)
+			BTHOMEHUBV2B)
 				ath9k_eeprom_extract "art" 0 1
 				ath9k_patch_fw_mac_crc "00:00:00:00:00:00" 524
 				;;
-			bt,homehub-v3a)
+			BTHOMEHUBV3A)
 				ath9k_eeprom_extract "art-copy" 0 1
 				ath9k_patch_fw_mac_crc $(macaddr_add $(mtd_get_mac_ascii uboot_env ethaddr) +2) 268
 				;;
-			bt,homehub-v5a)
+			BTHOMEHUBV5A)
 				ath9k_ubi_eeprom_extract "caldata" 4096 0
 				ath9k_patch_fw_mac_crc $(macaddr_add $(mtd_get_mac_binary_ubi caldata 4364) +2) 268
 				;;
-			netgear,dgn3500|netgear,dgn3500b)
+			DGN3500*)
 				ath9k_eeprom_extract "calibration" 61440 0
 				ath9k_patch_fw_mac_crc $(macaddr_add $(mtd_get_mac_ascii uboot-env ethaddr) +2) 524
 				;;
-			avm,fritz3370|avm,fritz7320|avm,fritz7360sl)
+			FRITZ3370)
 				ath9k_eeprom_extract "urlader" 2437 0
+				ath9k_patch_fw_mac "00:00:00:00:00:00" 2
 				;;
-			tplink,tdw8970|tplink,tdw8980)
+			FRITZ7320|FRITZ7360SL)
+				ath9k_eeprom_extract "urlader" 2437 0
+				ath9k_patch_fw_mac_crc "00:00:00:00:00:00" 268
+				;;
+			TDW8970|TDW8980)
 				ath9k_eeprom_extract "boardconfig" 135168 0
 				;;
 			*)

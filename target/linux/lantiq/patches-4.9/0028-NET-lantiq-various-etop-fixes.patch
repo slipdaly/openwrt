@@ -263,7 +263,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
  	return IRQ_HANDLED;
  }
  
-@@ -220,7 +297,7 @@ ltq_etop_free_channel(struct net_device
+@@ -220,7 +297,7 @@ ltq_etop_free_channel(struct net_device 
  	ltq_dma_free(&ch->dma);
  	if (ch->dma.irq)
  		free_irq(ch->dma.irq, priv);
@@ -643,7 +643,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
  	return 0;
  }
  
-@@ -476,16 +672,16 @@ ltq_etop_tx(struct sk_buff *skb, struct
+@@ -476,16 +672,16 @@ ltq_etop_tx(struct sk_buff *skb, struct 
  	int queue = skb_get_queue_mapping(skb);
  	struct netdev_queue *txq = netdev_get_tx_queue(dev, queue);
  	struct ltq_etop_priv *priv = netdev_priv(dev);
@@ -665,7 +665,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
  		netdev_err(dev, "tx ring full\n");
  		netif_tx_stop_queue(txq);
  		return NETDEV_TX_BUSY;
-@@ -493,7 +689,7 @@ ltq_etop_tx(struct sk_buff *skb, struct
+@@ -493,7 +689,7 @@ ltq_etop_tx(struct sk_buff *skb, struct 
  
  	/* dma needs to start on a 16 byte aligned address */
  	byte_offset = CPHYSADDR(skb->data) % 16;
@@ -674,7 +674,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
  
  	netif_trans_update(dev);
  
-@@ -503,11 +699,11 @@ ltq_etop_tx(struct sk_buff *skb, struct
+@@ -503,11 +699,11 @@ ltq_etop_tx(struct sk_buff *skb, struct 
  	wmb();
  	desc->ctl = LTQ_DMA_OWN | LTQ_DMA_SOP | LTQ_DMA_EOP |
  		LTQ_DMA_TX_OFFSET(byte_offset) | (len & LTQ_DMA_SIZE_MASK);
